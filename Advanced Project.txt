@@ -1,0 +1,116 @@
+Advanced Project  
+Project ini bersifat tidak wajib (optional).  
+Web Based Presentation App  
+Aplikasi berbasis web ini digunakan untuk menampilkan detail tutorial per langkah. Jadi 
+diawali dengan user creator tutorial melakukan login ke aplikasi. Lalu terdapat halaman 
+Manajemen master tutorial, dimana pada halaman ini user dapat melakukan CRUD dat a 
+master tutorial.  
+Master tutorial terdiri dari data judul, kode mata kuliah, url presentation, url finished, 
+creator email, created at, updated at. Data mata kuliah bisa didapatkan dari webservice. URL 
+presentation adalah alamat yang dapat diakses user umum untuk melihat tu torial master 
+dan detailnya dengan status “show” (hasilnya mirip dengan yang ditampilkan pada halaman 
+notion ini). URL finished adalah alamat yang dapat diakses user umum untuk melihat tutorial 
+master dan semua detailnya baik dengan status “show” maupun “h ide” (tampilkan dalam 
+bentuk PDF).  
+Kemudian terdapat halaman Manajemen detail tutorial dimana pada halaman ini user dapat 
+melakukan CRUD data detail tutorial. Detail tutorial berelasi dengan master tutorial, satu 
+data master bisa memiliki banyak detail (One -to-Many). Detail tutorial bisa be rupa text, 
+gambar, code, atau URL. Detail tutorial memiliki urutan (order) dan status (show/hide). Code 
+ditampilkan menggunakan Syntax Highlighter.  
+Detail tutorial terdiri dari data text, gambar, code, url, order, status, created at, updated at.  
+Pada aplikasi ini juga terdapat layanan yang dapat menyediakan data master tutorial untuk 
+sistem lain yang membutuhkan (webservice server).  
+ 
+Contoh  : 
+Setelah berhasil melakukan login. User creator (misalnya dosen) pada matakuliah A11.64404 
+Pemrograman Web Lanjut membuat tutorial untuk praktikum yang berjudul “Hello World 
+dengan PHP”. URL presentation untuk tutorial ini alamatnya 
+http://localhost:8080/presentation/hello -world -dengan -php-5487645461659754  URL 
+finished untuk tutorial ini alamatnya http://localhost:8080/finished/hello -world -dengan -
+php-8758648921535  
+ 
+Setiap detail tutorial ini memiliki status show/hide. Sehingga user creator bisa menentukan 
+langkah berapa saja yang mau ditampilkan pada suatu waktu tertentu. Misalnya pada 
+kondisi awal, tutorial hanya ditampilkan yang urutan no 1 dan 2. Sehingga detail t utorial 1 -2 
+buat statusnya adalah “show”, dan 3 -11 statusnya adalah “hide”.  
+User umum (tanpa login) misalnya mahasiswa, bisa mengakses tutorial tersebut pada URL 
+presentation http://localhost:8080/presentation/hello -world -dengan -php-
+5487645461659754 . Tampilnya adalah tutorial “Hello World dengan PHP” dengan detail 
+tutorial yang t ampil hanya urutan no 1 dan 2. Tampilan pada jendela browser mirip dengan 
+yang ada pada notion ini.  
+Setelah mahasiswa selesai mempraktikan tutorial urutan 1 dan 2, dosen mengubah status 
+detail tutorial no 3 dan 4 yang semula adalah “hide” diubah menjadi “show” pada menu 
+Halaman Manajemen detail tutorial. Sehingga tampilan pada URL presentation yang diaks es 
+oleh mahasiswa tadi secara otomatis (auto refresh) detail tutorial yang ditampilkan 
+bertambah, yang tampil adalah detail dengan urutan ke 1,2,3, dan 4. Begitu seterusnya 
+sampai detail tutorial yang paling akhir.  
+URL presentation fokus digunakan untuk dosen pada saat mengajar di lab. Jika mahasiswa 
+mau diberikan tutorial dengan full detailnya yang lengkap (tanpa peduli status show dan 
+hide) untuk bisa diakses dirumah setelah perkuliahan berakhir, berikan URL finish ed saja 
+http://localhost:8080/finished/hello -world -dengan -php-8758648921535 . Tampilnya adalah 
+tutorial “Hello World dengan PHP” dengan detail tutorial yang tampil lengkap urutan 1 -11. 
+Tampilan pada jendela browser adalah format PDF (atau bisa didownload).  
+ 
+Diluar kegiatan belajar mengajar, misalnya SiAdin (sistem luar) membutuhkan list data 
+tutorial per mata kuliah. Maka dari aplikasi ini harus bisa menyediakan endpoint untuk 
+menangani request tersebut, tanpa menggunakan otentikasi.  
+Misalnya : localhost:8080/api/[kode_matkul] = http://localhost:8080/api/A11.54314  
+Memberikan response data master tutorial pada mata kuliah dengan kode mata kuliah 
+A11.54314 (judul, url presentation, url finished, creator email, created at, updated at)  
+ 
+ 
+ 
+Spesifikasi Project:  
+1. Menggunakan framework berbasis PHP/node.js, pilih salah satu. Dengan database 
+MySQL.  
+2. CSS menggunakan framework Bootstrap/Tailwind, pilih salah satu.  
+3. Upload project pada repository GitHub.  
+4. Buat halaman login, gunakan email dan password untuk proses otentikasi ke 
+webservice (webservice client). Jika berhasil akan mendapatkan “refreshToken” pada 
+response.  **endpoint : https://jwt -auth -eight -neon.vercel.app/login**email : 
+aprilyani.safitri@gmail.com  
+password : 123456  
+ 
+ 
+5. Halaman Manajemen master tutorial (CRUD)  
+Hanya user terotentikasi yang bisa mengakses menu ini. Tampilkan data pada 
+datatable.  
+Detail data :  
+Judul, kode mata kuliah (webservice client), url presentation, url finished, creator 
+email, created at, updated at. URL presentation dan URL finished tidak boleh ada 
+yang sama untuk keseluruhan data tutorial (unique).  
+Untuk data mata kuliah mengambil dari webservice (sertakan refreshToken). Jika 
+berhasil akan mendapatkan dua data dengan detail terdapat kode mata kuliah dan 
+nama mata kuliah pada response.  
+endpoint : https://jwt -auth -eight -neon.vercel.app/getMakul  
+
+ 
+ 
+6. Halaman Manajemen detail tutorial (CRUD)  
+Hanya user terotentikasi yang bisa mengakses menu ini. Data detail tutorial ini 
+berelasi dengan data master tutorial (One to Many).  
+Detail data :  
+Text, gambar, code, url, order, status (show/hide), created at, updated at  
+7. Menu Logout  
+Untuk melakukan logout menggunakan webservice (sertakan refreshToken). Jika 
+berhasil akan mendapatkan “OK" pada response.  
+endpoint : https://jwt -auth -eight -neon.vercel.app/logout  
+Coba dengan menggunakan Postman  
+
+ 
+8. View tutorial (url presentation)  
+User bisa melihat tutorial tanpa login, tutorial hanya menampilkan detail dengan 
+status “show”. Halaman ini auto refresh sehingga bisa segera menampilkan detail 
+tutorial yang statusnya berubah dari hide menjadi show.  
+9. View/Download PDF per tutorial lengkap (url finished).  
+User bisa melihat tutorial tanpa login, tutorial menampilkan detail dengan status 
+“show” maupun “hide” dalam format PDF.  
+10. List tutorial per mata kuliah (webservice server)  
+Sediakan sebuah endpoint yang bisa digunakan untuk menangani request data 
+master tutorial dari luar aplikasi, tampilkan data tutorial apa saja yang sudah dibuat 
+per mata kuliah (judul, url presentation, url finished, creator email, created at, 
+updated at).  
+
+ 
+ 
+
