@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'jwt' => [
+        'url' => env('JWT_API_URL', 'https://jwt-auth-eight-neon.vercel.app'),
+    ],
+
 ];

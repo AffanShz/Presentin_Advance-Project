@@ -35,15 +35,16 @@ class AuthController extends Controller
     public function logout()
     {
         $token = Session::get('refreshToken');
+        $baseUrl = config('services.jwt.url', 'https://jwt-auth-eight-neon.vercel.app');
 
         $response = Http::withToken($token)
-            ->get('https://jwt-auth-eight-neon.vercel.app/logout');
+            ->post($baseUrl . '/logout');
 
-        if($response->successful()){
+        if($response->successful() && $response->body() === 'OK'){
             Session::forget('refreshToken');
-            return redirect('/login');
+            return redirect('/login')->with('success', 'Berhasil logout');
         }
 
-        return back()->with('error', 'Gagal logout');
+        return back()->with('error', 'Gagal logout dari sistem');
     }
 }

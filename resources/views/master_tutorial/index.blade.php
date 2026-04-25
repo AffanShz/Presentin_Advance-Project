@@ -3,53 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manajemen Master Tutorial</title>
+    <title>Daftar Tutorial - Presentin</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-100 p-8">
+    <div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Manajemen Master Tutorial</h1>
+            <div class="flex gap-2">
+                <a href="/master-tutorial/create" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">
+                    + Tambah Tutorial Baru
+                </a>
+                <a href="/logout-action" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition" onclick="return confirm('Apakah Anda yakin ingin logout?')">
+                    Logout
+                </a>
+            </div>
+        </div>
 
-<div class="container mx-auto p-4 mt-10 bg-white rounded shadow">
-    <h1 class="text-2xl font-bold mb-4">Manajemen Master Tutorial</h1>
-    <a href="/master-tutorial/create" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded inline-block mb-4">Tambah Tutorial</a>
+        @if(session('success'))
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6">
+                {{ session('success') }}
+            </div>
+        @endif
 
-    <div class="overflow-x-auto">
-        <table id="tutorialTable" class="w-full mt-4 border-collapse border border-gray-300">
-            <thead>
-                <tr class="bg-gray-100 text-left">
-                    <th class="border p-2">Judul</th>
-                    <th class="border p-2">Kode MK</th>
-                    <th class="border p-2">URL Presentation</th>
-                    <th class="border p-2">URL Finished</th>
-                    <th class="border p-2">Creator Email</th>
-                    <th class="border p-2">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($tutorials as $item)
-                <tr>
-                    <td class="border p-2">{{ $item->judul }}</td>
-                    <td class="border p-2">{{ $item->kode_mata_kuliah }}</td>
-                    <td class="border p-2"><a href="{{ $item->url_presentation }}" class="text-blue-500 hover:underline">Link</a></td>
-                    <td class="border p-2"><a href="{{ $item->url_finished }}" class="text-blue-500 hover:underline">Link</a></td>
-                    <td class="border p-2">{{ $item->creator_email }}</td>
-                    <td class="border p-2">
-                        </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-700">
+                        <th class="p-3 border">No</th>
+                        <th class="p-3 border">Judul</th>
+                        <th class="p-3 border">Mata Kuliah</th>
+                        <th class="p-3 border">URL (Presentasi / Finish)</th>
+                        <th class="p-3 border text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($tutorials as $index => $item)
+                        <tr class="hover:bg-gray-50">
+                            <td class="p-3 border text-center">{{ $index + 1 }}</td>
+                            <td class="p-3 border font-semibold">{{ $item->judul }}</td>
+                            <td class="p-3 border text-sm text-gray-600">{{ $item->kode_mata_kuliah }}</td>
+                            <td class="p-3 border">
+                                <div class="flex flex-col gap-1 text-xs">
+                                    <a href="{{ $item->url_presentation }}" target="_blank" class="text-blue-500 hover:underline">🔗 Link Presentasi</a>
+                                    <a href="{{ $item->url_finished }}" target="_blank" class="text-purple-500 hover:underline">🔗 Link Finish (PDF)</a>
+                                </div>
+                            </td>
+                            <td class="p-3 border">
+                                <div class="flex justify-center gap-2">
+                                    <a href="/master-tutorial/{{ $item->id }}/detail" class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
+                                        Isi Materi
+                                    </a>
+
+                                    <a href="/master-tutorial/{{ $item->id }}/edit" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600">
+                                        Edit
+                                    </a>
+
+                                    <form action="{{ url('/master-tutorial/'.$item->id) }}" method="POST" onsubmit="return confirm('Hapus tutorial ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="p-4 text-center text-gray-500 italic">Belum ada data tutorial.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-
-<script>
-    $(document).ready(function() {
-        // Inisialisasi DataTables
-        $('#tutorialTable').DataTable();
-    });
-</script>
-
 </body>
 </html>

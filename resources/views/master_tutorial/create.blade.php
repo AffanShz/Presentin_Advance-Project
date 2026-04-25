@@ -21,12 +21,28 @@
 
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Kode Mata Kuliah</label>
-                <select name="kode_matkul" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select name="kode_mata_kuliah" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                     <option value="">Pilih Mata Kuliah</option>
-                    </select>
+                    @if(isset($makulData) && is_array($makulData) && count($makulData) > 0)
+                        @foreach($makulData as $makul)
+                            <option value="{{ $makul['kdmk'] ?? '' }}">
+                                {{ $makul['nama'] ?? ($makul['kdmk'] ?? 'Unknown') }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+                @if(empty($makulData))
+                    <p class="text-red-500 text-xs italic mt-2">Gagal Memuat Mata Kuliah. Data dari Webservice API tidak dapat ditarik.</p>
+                @endif
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Email Pembuat</label>
+                <input type="email" name="creator_email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required placeholder="email@domain.com">
             </div>
 
             <div class="flex justify-end mt-6">
+                <a href="{{ url('/master-tutorial') }}" class="mr-4 text-gray-600 px-4 py-2 hover:underline">Batal</a>
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Simpan</button>
             </div>
         </form>
