@@ -6,6 +6,14 @@
     <title>Login - Presentin</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+        if (localStorage.getItem('dark-mode') === 'true') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-10 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">

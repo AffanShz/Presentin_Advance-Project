@@ -29,8 +29,11 @@ class DetailTutorialController extends Controller
         ]);
 
         $path = null;
-        if ($request->hasFile('gambar')) {
-            $path = $request->file('gambar')->store('tutorials', 'public');
+        if ($request->hasFile('gambar') && $request->file('gambar')->isValid()) {
+            $file = $request->file('gambar');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(storage_path('app/public/tutorials'), $filename);
+            $path = 'tutorials/' . $filename;
         }
 
         DetailTutorial::create([

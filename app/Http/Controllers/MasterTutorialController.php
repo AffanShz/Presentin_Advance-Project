@@ -47,9 +47,8 @@ public function store(Request $request)
     MasterTutorial::create([
         'judul' => $request->judul,
         'kode_mata_kuliah' => $request->kode_mata_kuliah,
-        // Sesuaikan dengan rute di web.php yaitu /presentation/{slug}
         'url_presentation' => url("/presentation/" . $finalSlug),
-        'url_finished' => url("/finished/" . $finalSlug), // Tetap simpan meski PDF dilewati
+        'url_finished' => url("/finished/" . $finalSlug),
         'creator_email' => $request->creator_email,
     ]);
 
@@ -74,17 +73,19 @@ public function store(Request $request)
     
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'judul' => 'required',
+            'kode_mata_kuliah' => 'required',
+        ]);
+
         $master = MasterTutorial::findOrFail($id);
     
         $master->update([
             'judul' => $request->judul,
             'kode_mata_kuliah' => $request->kode_mata_kuliah,
-            'url_presentation' => $request->url_presentation,
-            'url_finished' => $request->url_finished,
-            'creator_email' => $request->creator_email,
         ]);
 
-        return back()->with('success', 'Tutorial berhasil diubah!');
+        return redirect('/master-tutorial')->with('success', 'Tutorial berhasil diubah!');
     }
 
     public function destroy($id)
