@@ -41,15 +41,17 @@ public function store(Request $request)
     ]);
 
     $slug = Str::slug($request->judul);
-    $randomId = rand(111111, 999999);
+    $randomId = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'), 0, 6);
     $finalSlug = $slug . '-' . $randomId;
+
+    $creator_email = Session::get('email');
 
     MasterTutorial::create([
         'judul' => $request->judul,
         'kode_mata_kuliah' => $request->kode_mata_kuliah,
         'url_presentation' => url("/presentation/" . $finalSlug),
         'url_finished' => url("/finished/" . $finalSlug),
-        'creator_email' => $request->creator_email,
+        'creator_email' => $creator_email,
     ]);
 
     return redirect('/master-tutorial')->with('success', 'Master Tutorial berhasil dibuat!');
@@ -95,5 +97,4 @@ public function store(Request $request)
         
         return back()->with('success', 'Tutorial berhasil dihapus!');
     }
-
 }

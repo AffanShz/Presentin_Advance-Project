@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 
 // --- Public Auth Routes ---
 // Default route redirect
-Route::redirect('/', '/login');
+Route::get('/', function(){
+    return view('login');
+});
 
 // Halaman login dan aksi login menggunakan API eksternal
 Route::view('/login', 'login')->name('login');

@@ -46,12 +46,12 @@
 
             <div class="mb-6">
                 <label class="block text-gray-700 dark:text-white text-sm font-bold mb-2">Email Pembuat</label>
-                <input type="email" name="creator_email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required placeholder="email@domain.com">
+                <input type="email" value="{{ Session::get('email') }}" name="creator_email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100 dark:bg-gray-700" readonly>
             </div>
 
             <div class="flex justify-end mt-6">
                 <a href="{{ url('/master-tutorial') }}" class="mr-4 text-gray-600 dark:text-gray-300 px-4 py-2 hover:underline">Batal</a>
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Simpan</button>
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 dark:text-white">Simpan</button>
             </div>
         </form>
     </div>

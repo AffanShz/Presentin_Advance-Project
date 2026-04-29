@@ -32,7 +32,7 @@
                     
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Urutan Langkah</label>
-                        <input type="number" name="order" placeholder="Contoh: 1" class="w-full border-gray-300 rounded-md shadow-sm border p-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        <input type="number" min="1" name="order" placeholder="Contoh: 1" class="w-full border-gray-300 rounded-md shadow-sm border p-2 focus:ring-blue-500 focus:border-blue-500" required>
                     </div>
                     
                     <div>

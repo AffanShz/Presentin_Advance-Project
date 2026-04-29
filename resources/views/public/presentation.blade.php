@@ -18,6 +18,7 @@
     <div id="presentation-container" class="max-w-3xl mx-auto bg-white dark:bg-gray-800 p-6 rounded shadow border dark:border-gray-700">
         <h1 class="text-3xl font-bold mb-6 text-center dark:text-white">{{ $master->judul }}</h1>
         <p class="text-center text-gray-500 dark:text-gray-400 mb-6">{{ $master->kode_mata_kuliah }}</p>
+        <p class="text-center text-gray-500 dark:text-gray-400 mb-6">{{ $master->creator_email }}</p>
         <hr><br>
         
         <div id="tutorial-content">

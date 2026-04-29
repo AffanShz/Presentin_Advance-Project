@@ -19,6 +19,16 @@ class CheckAuthToken
         if (!Session::has('refreshToken')) {
             return redirect('/login')->with('error', 'Anda harus login terlebih dahulu.');
         }
+        
+        $token = Session::get('refreshToken');
+        $tokenParts = explode('.', $token);
+        if (count($tokenParts) === 3) {
+            $payload = json_decode(base64_decode($tokenParts[1]), true);
+            if (isset($payload['exp']) && $payload['exp'] < time()) {
+                Session::flush();
+                return redirect('/login')->with('error', 'Token telah kedaluwarsa. Silakan login kembali.');
+            }
+        }
         return $next($request);
     }
 }

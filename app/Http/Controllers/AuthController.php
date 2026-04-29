@@ -25,6 +25,7 @@ class AuthController extends Controller
             $token = $response->json('refreshToken');
 
             Session::put('refreshToken', $token);
+            Session::put('email', $email);
 
             return redirect('/master-tutorial');    
         }
@@ -37,14 +38,15 @@ class AuthController extends Controller
         $token = Session::get('refreshToken');
         $baseUrl = config('services.jwt.url', 'https://jwt-auth-eight-neon.vercel.app');
 
-        $response = Http::withToken($token)
-            ->post($baseUrl . '/logout');
-
-        if($response->successful() && $response->body() === 'OK'){
-            Session::forget('refreshToken');
-            return redirect('/login')->with('success', 'Berhasil logout');
+        if ($token) {
+            try {
+                Http::withToken($token)->post($baseUrl . '/logout');
+            } catch (\Exception $e) {
+                // Ignore API error
+            }
         }
 
-        return back()->with('error', 'Gagal logout dari sistem');
+        Session::flush();
+        return redirect('/login')->with('success', 'Berhasil logout');
     }
 }
